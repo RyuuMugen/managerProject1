@@ -1,0 +1,17 @@
+.contentbox {
+  padding: 10px 0px;
+  width: 100%;
+}
+.contentbox > div {
+  width: 30%;
+}
+.title {
+  color: rgb(0, 0, 238);
+  font-size: 16px;
+  padding-bottom: 5px;
+}
+.summary {
+  font-size: 14px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}

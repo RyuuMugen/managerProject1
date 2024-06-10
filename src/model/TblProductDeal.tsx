@@ -1,0 +1,31 @@
+export interface TblProductDeal {
+  id: number;
+  productId: number;
+  productImgUrl: string | null;
+  productSku: string | null;
+  productCode: string | null;
+  unitSellingPrice: number | null;
+  dealTitle: string | null;
+  dealDescription: string | null;
+  dealUnitSellingPrice: number | null;
+  dealQuantity: number | null;
+  minPurchaseQty: number | null;
+  maxPurchaseQty: number | null;
+  fromDate: string | null;
+  toDate: string | null;
+  active: string | null;
+  orderNumber: number | null;
+  totalSaleOrder: number | null;
+  totalSaleOrderBought: number | null;
+  totalViews: number | null;
+  rate: number | null;
+  totalRating: number | null;
+  reviewCount: number | null;
+  autoRenew: number | null;
+  priority: string | null;
+  marketPrice: number | null;
+  creationDate?: number | null;
+  createdBy?: number | null;
+  lastUpdateDate?: number | null;
+  lastUpdateBy?: number | null;
+}

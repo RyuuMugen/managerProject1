@@ -1,0 +1,13 @@
+.formInputStatus {
+  margin: 10px;
+  padding: 25px;
+  background-color: rgb(251, 251, 202);
+  border: 1px solid;
+}
+
+.titleH1 {
+  font-weight: 700;
+  font-size: 16px;
+  color: red;
+  margin-top: 8px;
+}

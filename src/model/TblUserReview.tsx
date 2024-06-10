@@ -1,0 +1,33 @@
+export interface TblUserReview {
+  id: number;
+  itemType?: string | null;
+  replyCount?: number | null;
+  itemId: number | null;
+  itemTitle?: string | null;
+  isUserAdmin?: number | null;
+  userId?: number | null;
+  userEmail?: string | null;
+  userName?: string | null;
+  relatedOrder?: string | null;
+  userAvatar?: string | null;
+  userNote?: string | null;
+  rate?: number | null;
+  title?: string | null;
+  content?: string | null;
+  files?: string | null;
+  searchFulltext?: string | null;
+  approved?: number | null;
+  postTime?: number | null;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  orderNumber?: number | null;
+  isFeatured?: number | null;
+  peopleIdVote?: string | null;
+  peopleLikeCount?: number | null;
+  peopleDislikeCount?: number | null;
+  creationDate?: string | null;
+  createdBy?: string | null;
+  lastUpdateDate?: string | null;
+  lastUpdateTime?: number | null;
+  lastUpdateBy?: string | null;
+}

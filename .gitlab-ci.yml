@@ -1,0 +1,85 @@
+variables:
+  IMAGE_TAG: "v$CI_PIPELINE_ID.$CI_COMMIT_SHORT_SHA"
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - deploy
+  
+#dev
+build-dev:       # This job runs in the build stage, which runs first.
+  stage: build
+  tags:
+    - runner-dev
+  script:
+    - echo "Build docker image ...."
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY_IMAGE
+    - docker build -t $CI_REGISTRY_IMAGE/$HARBOR_IMAGE_DEV/hacom.client.manager:$IMAGE_TAG --rm=true -f "./Dockerfile" .
+    - echo "Push docker image to registry ..."
+    - docker push $CI_REGISTRY_IMAGE/$HARBOR_IMAGE_DEV/hacom.client.manager:$IMAGE_TAG
+  only:
+    - develop 
+deploy-dev:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.  
+  tags:
+    - runner-dev
+  script:
+    - echo "Updating image tag in values.yaml"
+    - export GIT_SSL_NO_VERIFY=true
+    - git clone http://oauth2:$ACCESS_TOKEN_DEPLOY@192.168.3.147:8929/hacom/deploy/hacom.deploy.git temp_helm_chart
+    - cd temp_helm_chart/helm-chart/client-manager
+    - >
+      sed -i 's/tag: .*/tag: "'"$IMAGE_TAG"'"/g' values.yaml
+    - git config user.email "admin@gmail.com"
+    - git config user.name "root"
+    - git commit -am "Update image tag to $IMAGE_TAG"
+    - >
+      git push http://oauth2:$ACCESS_TOKEN_DEPLOY@192.168.3.147:8929/hacom/deploy/hacom.deploy.git main
+  only:
+    - develop
+
+#std
+
+build-std:       # This job runs in the build stage, which runs first.
+  stage: build
+  tags:
+    - runner-dev
+  script:
+    - echo "Build docker image ...."
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY_IMAGE
+    - ls
+    - docker build -t $CI_REGISTRY_IMAGE/$HARBOR_IMAGE_DEV/hacom.client.manager-stagging:$IMAGE_TAG --rm=true -f "./Dockerfile" .
+  only:
+    - stagging 
+deploy-std:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.  
+  tags:
+    - runner-dev
+  script:
+    - echo "Push docker image to registry ..."
+    - docker push $CI_REGISTRY_IMAGE/$HARBOR_IMAGE_DEV/hacom.client.manager-stagging:$IMAGE_TAG
+  only:
+    - stagging
+
+
+# prod
+build-prod:       # This job runs in the build stage, which runs first.
+  stage: build
+  tags:
+    - runner-dev
+  script:
+    - echo "Build docker image ...."
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY_IMAGE
+    - ls
+    - docker build -t $CI_REGISTRY_IMAGE/$HARBOR_IMAGE_DEV/hacom.client.manager-prod:$IMAGE_TAG --rm=true -f "./Dockerfile" .
+  only:
+    - production 
+deploy-prod:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.  
+  tags:
+    - runner-dev
+  script:
+    - echo "Push docker image to registry ..."
+    - docker push $CI_REGISTRY_IMAGE/$HARBOR_IMAGE_DEV/hacom.client.manager-prod:$IMAGE_TAG
+  only:
+    - production
+
+
